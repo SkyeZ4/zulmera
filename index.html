@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zulmera Translator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Zulmera First Edition</p>
+        <h1>Zulmera Translator</h1>
+        <p class="hero-text">
+          A practical translator studio for the Zulmera conlang, built from the reference rules you provided:
+          AFSO sentence order, Velath linkers, English noun/adjective reshaping, and Spanish-based verbs.
+        </p>
+      </div>
+      <div class="hero-panel">
+        <div class="rule-chip">
+          <span>AFSO</span>
+          <strong>Action -> Feeling -> Subject -> Object</strong>
+        </div>
+        <div class="rule-chip">
+          <span>Velath</span>
+          <strong>vel / vela / veln / velan + ath / atha / athn / athan</strong>
+        </div>
+        <div class="rule-chip">
+          <span>Core Mix</span>
+          <strong>English nouns/adjectives + Spanish verbs/adverbs</strong>
+        </div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel panel-large">
+        <div class="panel-heading">
+          <div>
+            <p class="panel-kicker">Builder</p>
+            <h2>Sentence Composer</h2>
+          </div>
+          <p class="panel-note">Build a Zulmera sentence with the AFSO pattern.</p>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            Question style
+            <select id="questionType">
+              <option value="statement">Statement</option>
+              <option value="yesno">Yes / No (Evar)</option>
+              <option value="what">What (Velu)</option>
+              <option value="who">Who (Ziven)</option>
+              <option value="where">Where (Doun)</option>
+              <option value="when">When (Keiven)</option>
+              <option value="why">Why (Porvel)</option>
+              <option value="how">How (Koume)</option>
+            </select>
+          </label>
+
+          <label>
+            Verb source
+            <input id="verbInput" type="text" placeholder="cantar, correr, hablar">
+          </label>
+
+          <label>
+            Subject person
+            <select id="verbPerson">
+              <option value="i">I</option>
+              <option value="you">You</option>
+              <option value="he">He / She / It</option>
+              <option value="we">We</option>
+              <option value="they">They</option>
+            </select>
+          </label>
+
+          <label>
+            Tense
+            <select id="tense">
+              <option value="present">Present</option>
+              <option value="past">Past (Zeil)</option>
+              <option value="future">Future (Vora)</option>
+            </select>
+          </label>
+
+          <label class="checkbox">
+            <input id="negation" type="checkbox">
+            <span>Negation (Nuv)</span>
+          </label>
+
+          <label>
+            Feeling / intention
+            <input id="feelingInput" type="text" placeholder="quickly, softly, feliz">
+          </label>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="form-grid">
+          <label>
+            Subject type
+            <select id="subjectMode">
+              <option value="noun">Zi + noun phrase</option>
+              <option value="pronoun">Pronoun</option>
+            </select>
+          </label>
+
+          <label data-group="subjectPronoun">
+            Subject pronoun
+            <select id="subjectPronoun"></select>
+          </label>
+
+          <label data-group="subjectNoun">
+            Subject phrase
+            <input id="subjectPhrase" type="text" placeholder="tall man, young women, Maria">
+          </label>
+
+          <label data-group="subjectNoun">
+            Subject gender
+            <select id="subjectGender">
+              <option value="masc">Masculine / neutral</option>
+              <option value="fem">Feminine</option>
+            </select>
+          </label>
+
+          <label data-group="subjectNoun">
+            Subject number
+            <select id="subjectNumber">
+              <option value="singular">Singular</option>
+              <option value="plural">Plural</option>
+            </select>
+          </label>
+
+          <label>
+            Object phrase
+            <input id="objectPhrase" type="text" placeholder="sad song, blue river">
+          </label>
+
+          <label>
+            Object gender
+            <select id="objectGender">
+              <option value="masc">Masculine / neutral</option>
+              <option value="fem">Feminine</option>
+            </select>
+          </label>
+
+          <label>
+            Object number
+            <select id="objectNumber">
+              <option value="singular">Singular</option>
+              <option value="plural">Plural</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="action-row">
+          <button id="composeButton" class="button primary" type="button">Compose Zulmera Sentence</button>
+          <button id="clearComposer" class="button" type="button">Reset</button>
+        </div>
+
+        <div class="result-card">
+          <p class="result-label">Zulmera output</p>
+          <p id="sentenceOutput" class="result-text">Cantou zi girl vela atha sed zong</p>
+          <p id="sentenceBreakdown" class="result-meta">Action first, then the subject bridge, then the object.</p>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-heading">
+          <div>
+            <p class="panel-kicker">Lookup</p>
+            <h2>Quick Translator</h2>
+          </div>
+          <p class="panel-note">Translate supported phrases or apply Zulmera phonetic shaping.</p>
+        </div>
+
+        <label>
+          English or reference phrase
+          <textarea id="lookupInput" rows="5" placeholder="good morning, thank you, cold river, happy song"></textarea>
+        </label>
+
+        <div class="action-row">
+          <button id="lookupButton" class="button primary" type="button">Translate</button>
+        </div>
+
+        <div class="result-card compact">
+          <p class="result-label">Result</p>
+          <p id="lookupOutput" class="result-text">Buneiv maneiv</p>
+          <p id="lookupMeta" class="result-meta">Dictionary hits stay exact. Unknown English nouns and adjectives follow Zulmera sound rules.</p>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-heading">
+          <div>
+            <p class="panel-kicker">Word Forge</p>
+            <h2>Word and Verb Tools</h2>
+          </div>
+          <p class="panel-note">Shape English words and conjugate Spanish verbs into Zulmera form.</p>
+        </div>
+
+        <div class="tool-stack">
+          <label>
+            English noun / adjective
+            <input id="wordInput" type="text" placeholder="water, sister, happy">
+          </label>
+          <label>
+            Word type
+            <select id="wordType">
+              <option value="standard">Standard English word</option>
+              <option value="color">Color</option>
+              <option value="person">Person name</option>
+              <option value="place">Place / institution</option>
+            </select>
+          </label>
+          <div class="action-row">
+            <button id="wordButton" class="button primary" type="button">Transform Word</button>
+          </div>
+          <div class="result-card compact">
+            <p class="result-label">Word output</p>
+            <p id="wordOutput" class="result-text">veter</p>
+          </div>
+        </div>
+
+        <div class="mini-divider"></div>
+
+        <div class="tool-stack">
+          <label>
+            Spanish infinitive
+            <input id="verbOnlyInput" type="text" placeholder="hablar, correr, cantar">
+          </label>
+          <label>
+            Person
+            <select id="verbOnlyPerson">
+              <option value="i">I</option>
+              <option value="you">You</option>
+              <option value="he">He / She / It</option>
+              <option value="we">We</option>
+              <option value="they">They</option>
+            </select>
+          </label>
+          <label>
+            Tense
+            <select id="verbOnlyTense">
+              <option value="present">Present</option>
+              <option value="past">Past</option>
+              <option value="future">Future</option>
+            </select>
+          </label>
+          <label class="checkbox">
+            <input id="verbOnlyNegative" type="checkbox">
+            <span>Negation</span>
+          </label>
+          <div class="action-row">
+            <button id="verbButton" class="button primary" type="button">Conjugate Verb</button>
+          </div>
+          <div class="result-card compact">
+            <p class="result-label">Verb output</p>
+            <p id="verbOutput" class="result-text">Vora cantou</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel panel-wide">
+        <div class="panel-heading">
+          <div>
+            <p class="panel-kicker">Reference</p>
+            <h2>Core Zulmera Tables</h2>
+          </div>
+          <p class="panel-note">Key vocabulary from the guide for quick checking while you translate.</p>
+        </div>
+        <div id="referenceGrid" class="reference-grid"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
