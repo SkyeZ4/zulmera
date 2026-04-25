@@ -312,7 +312,6 @@ document.addEventListener("DOMContentLoaded", () => {
   bindWordTools();
   updateSubjectMode();
   composeSentence();
-  runAutomaticTranslator();
   runLookup();
   runWordTransform();
   runVerbTransform();
@@ -396,7 +395,6 @@ function bindLookup() {
 
 function bindAutoTranslator() {
   document.getElementById("autoTranslateButton").addEventListener("click", runAutomaticTranslator);
-  document.getElementById("autoSentenceInput").addEventListener("input", runAutomaticTranslator);
 }
 
 function bindWordTools() {
@@ -526,8 +524,8 @@ function runAutomaticTranslator() {
   const metaNode = document.getElementById("autoSentenceMeta");
 
   if (!input) {
-    outputNode.textContent = "Vora Nuv cante zi tel men vel ath sed zong";
-    metaNode.textContent = "Best with simple English subject-verb-object sentences like \"The tall man will not sing a sad song.\"";
+    outputNode.textContent = "";
+    metaNode.textContent = "Write a sentence, then click Translate. Best with simple English subject-verb-object sentences.";
     return;
   }
 
@@ -588,7 +586,13 @@ function translateAutomaticSentence(input) {
   const remainderTokens = workingTokens.slice(safeVerbIndex + 1);
   const { feelingTokens, contentTokens } = extractFeelingTokens(remainderTokens);
 
-  const subjectAnalysis = analyzeAutomaticSubject(subjectTokens.length ? subjectTokens : ["the", "girl"]);
+  const subjectAnalysis = analyzeAutomaticSubject(subjectTokens);
+  if (!subjectAnalysis) {
+    return {
+      text: "",
+      meta: "I couldn't detect the subject clearly. Try a sentence like \"The girl sings a song\" or \"We will not find the river.\""
+    };
+  }
   const objectAnalysis = analyzeAutomaticNounPhrase(contentTokens);
   const verbInput = resolveAutomaticVerb(verbToken);
   const tense = hasFuture || questionAux === "will" ? "future" : (hasPastHelper || isPastVerbWord(verbToken) || questionAux === "did" ? "past" : "present");
@@ -713,6 +717,9 @@ function resolveAutomaticVerb(token) {
 
 function analyzeAutomaticSubject(tokens) {
   const cleaned = cleanupPhraseTokens(tokens);
+  if (!cleaned.length) {
+    return null;
+  }
   const first = cleaned[0];
   if (PRONOUN_DETAILS[first]) {
     const detail = PRONOUN_DETAILS[first];
@@ -727,11 +734,14 @@ function analyzeAutomaticSubject(tokens) {
   }
 
   const phraseInfo = analyzeAutomaticNounPhrase(cleaned);
+  if (!phraseInfo.phrase) {
+    return null;
+  }
   return {
     mode: "noun",
     pronounKey: "i",
     person: phraseInfo.number === "plural" ? "they" : "he",
-    phrase: phraseInfo.phrase || "girl",
+    phrase: phraseInfo.phrase,
     gender: phraseInfo.gender,
     number: phraseInfo.number
   };
